@@ -31,16 +31,17 @@ tensorboard/
 checkpoints/
 outputs/
 *.log
+!original/ext_script/scripts/train/model_tracking
 
 # Data (usually too large)
 data/
 datasets/
-*.pt
+original/ext_script/data/
+original/source
+original/**/data/
+original/**/runs/
+original/**/datasets/
 *.pth
 *.ckpt
 *.npz
 *.npy
-
-# If you WANT to version only selected models, do it via a dedicated folder:
-# !trained_models/
-EOF
