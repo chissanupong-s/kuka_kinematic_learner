@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Environments
+.venv/
+venv/
+env/
+miniconda*/
+anaconda*/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / runs / outputs (common in training)
+runs/
+logs/
+data/
+wandb/
+tensorboard/
+checkpoints/
+outputs/
+*.log
+
+# Data (usually too large)
+data/
+datasets/
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.npy
+
+# If you WANT to version only selected models, do it via a dedicated folder:
+# !trained_models/
+EOF

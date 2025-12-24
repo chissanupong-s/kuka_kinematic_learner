@@ -1,0 +1,3 @@
+*.pt !text !filter !merge !diff
+*.obj !text !filter !merge !diff
+*.mtl !text !filter !merge !diff
