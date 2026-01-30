@@ -1,0 +1,21 @@
+
+# VS Code
+.vscode/
+*.vc.db
+
+# VS Code
+.vscode/
+*.vc.db
+*.vc.db-*
+# VS Code
+**/.vscode/
+*.vc.db
+*.vc.db-*
+*.db-wal
+*.db-shm
+# VS Code
+**/.vscode/
+*.vc.db
+*.vc.db-*
+*.db-wal
+*.db-shm

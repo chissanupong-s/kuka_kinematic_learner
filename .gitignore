@@ -45,3 +45,14 @@ original/**/datasets/
 *.ckpt
 *.npz
 *.npy
+
+
+
+# VS Code
+.vscode/
+*.vc.db
+
+# VS Code
+.vscode/
+*.vc.db
+*.vc.db-*

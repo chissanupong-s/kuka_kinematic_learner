@@ -1,3 +1,24 @@
 {
-    "ros.distro": "humble"
+    "ros.distro": "humble",
+    "ROS2.distro": "humble",
+    "python.autoComplete.extraPaths": [
+        "/home/wish/project_ws/ros2_isaac_ws/build/iiwa14_tracik_ik",
+        "/home/wish/project_ws/ros2_isaac_ws/install/iiwa14_tracik_ik/lib/python3.10/site-packages",
+        "/home/wish/project_ws/ros2_isaac_ws/build/iiwa14_bringup",
+        "/home/wish/project_ws/ros2_isaac_ws/install/iiwa14_bringup/lib/python3.10/site-packages",
+        "/home/wish/project_ws/ros2_isaac_ws/build/iiwa14_tools",
+        "/home/wish/project_ws/ros2_isaac_ws/install/iiwa14_tools/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/wish/project_ws/ros2_isaac_ws/build/iiwa14_tracik_ik",
+        "/home/wish/project_ws/ros2_isaac_ws/install/iiwa14_tracik_ik/lib/python3.10/site-packages",
+        "/home/wish/project_ws/ros2_isaac_ws/build/iiwa14_bringup",
+        "/home/wish/project_ws/ros2_isaac_ws/install/iiwa14_bringup/lib/python3.10/site-packages",
+        "/home/wish/project_ws/ros2_isaac_ws/build/iiwa14_tools",
+        "/home/wish/project_ws/ros2_isaac_ws/install/iiwa14_tools/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
 }

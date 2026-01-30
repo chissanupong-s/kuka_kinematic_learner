@@ -1,5 +1,25 @@
 
-import argparse, os, random
+#!/usr/bin/env python3
+
+"""train_multitask_masked.py
+
+Single model across 5/6/7-DOF (iiwa) using:
+- mask conditioning (additive projection; keeps old checkpoint compatibility)
+- masked IK loss (inactive joints ignored)
+- simple supervised multi-task training (not meta)
+
+This version also:
+- saves per-task normalization (task_norm) into checkpoints so eval scripts can
+  normalize inputs exactly like training
+- supports safe checkpoint loading with PyTorch 2.6+ (weights_only default)
+- optionally supports averaging multiple init checkpoints (5/6/7) for a more
+  balanced starting point
+"""
+
+import argparse
+import os
+import random
+import sys
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -11,6 +31,102 @@ from tqdm import tqdm
 
 POSE_COLS = ["x", "y", "z", "qw", "qx", "qy", "qz"]
 JOINT_COLS = [f"q{i}" for i in range(1, 8)]
+
+
+# -------------------------
+# Safe torch.load (PyTorch 2.6+ compatibility)
+# -------------------------
+def safe_torch_load(path: str, map_location):
+    """Best-effort torch.load that works across torch versions.
+
+    PyTorch 2.6 changed the default to weights_only=True. Older checkpoints may
+    require weights_only=False (full unpickling). Only use that for trusted files.
+    """
+    try:
+        return torch.load(path, map_location=map_location, weights_only=True)
+    except TypeError:
+        # torch without weights_only kwarg
+        return torch.load(path, map_location=map_location)
+    except Exception:
+        try:
+            return torch.load(path, map_location=map_location, weights_only=False)
+        except TypeError:
+            return torch.load(path, map_location=map_location)
+
+
+def strip_module_prefix(sd: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
+    keys = list(sd.keys())
+    if not keys:
+        return sd
+    n_module = sum(k.startswith("module.") for k in keys)
+    if n_module > len(keys) // 2:
+        return {k[len("module.") :]: v for k, v in sd.items()}
+    return sd
+
+
+def extract_state_dict(ckpt_obj):
+    if isinstance(ckpt_obj, dict) and "model_state_dict" in ckpt_obj:
+        sd = ckpt_obj["model_state_dict"]
+    else:
+        sd = ckpt_obj
+    if not isinstance(sd, dict):
+        raise ValueError("Checkpoint does not contain a state_dict dict.")
+    return strip_module_prefix(sd)
+
+
+def load_state_dict_any(path: str, device: torch.device) -> Dict[str, torch.Tensor]:
+    ckpt = safe_torch_load(path, map_location=device)
+    return extract_state_dict(ckpt)
+
+
+def average_state_dicts(state_dicts: List[Dict[str, torch.Tensor]]) -> Dict[str, torch.Tensor]:
+    """Averages only keys present in ALL dicts and with identical tensor shapes."""
+    if not state_dicts:
+        return {}
+
+    common = set(state_dicts[0].keys())
+    for sd in state_dicts[1:]:
+        common &= set(sd.keys())
+
+    avg_sd: Dict[str, torch.Tensor] = {}
+    for k in sorted(common):
+        vals = [sd[k] for sd in state_dicts]
+        if not all(isinstance(v, torch.Tensor) for v in vals):
+            continue
+        if not all(v.shape == vals[0].shape for v in vals):
+            continue
+        stacked = torch.stack([v.detach().float().cpu() for v in vals], dim=0).mean(dim=0)
+        avg_sd[k] = stacked.to(dtype=vals[0].dtype)
+    return avg_sd
+
+
+def init_model_from_checkpoints(model: nn.Module, ckpt_paths: List[str], device: torch.device) -> bool:
+    """Initialize model from a single checkpoint or an average over multiple."""
+    ckpt_paths = [p for p in ckpt_paths if p and os.path.exists(p)]
+    if not ckpt_paths:
+        return False
+
+    if len(ckpt_paths) == 1:
+        sd = load_state_dict_any(ckpt_paths[0], device)
+        missing, unexpected = model.load_state_dict(sd, strict=False)
+        print(f"[INFO] Loaded init from {ckpt_paths[0]}")
+        if missing:
+            print(f"[INFO]  missing keys (ok for mask_proj): {missing[:8]}{'...' if len(missing) > 8 else ''}")
+        if unexpected:
+            print(f"[WARN]  unexpected keys: {unexpected[:8]}{'...' if len(unexpected) > 8 else ''}")
+        return True
+
+    sds = [load_state_dict_any(p, device) for p in ckpt_paths]
+    avg_sd = average_state_dicts(sds)
+    missing, unexpected = model.load_state_dict(avg_sd, strict=False)
+    print(f"[INFO] Initialising from AVERAGED checkpoints ({len(ckpt_paths)}):")
+    for p in ckpt_paths:
+        print(f"       - {p}")
+    if missing:
+        print(f"[INFO]  missing keys (ok for mask_proj): {missing[:8]}{'...' if len(missing) > 8 else ''}")
+    if unexpected:
+        print(f"[WARN]  unexpected keys: {unexpected[:8]}{'...' if len(unexpected) > 8 else ''}")
+    return True
 
 
 # -------------------------
@@ -30,7 +146,7 @@ def load_dataset_tensor(path: str) -> torch.Tensor:
         arrs = []
         total = 0
         for fp in shard_files:
-            obj = torch.load(fp)
+            obj = safe_torch_load(fp, map_location="cpu")
             t = obj["data"] if isinstance(obj, dict) and "data" in obj else obj
             if not isinstance(t, torch.Tensor) or t.ndim != 2 or t.shape[1] != 14:
                 raise ValueError(f"Shard {fp} must be Tensor [N,14]")
@@ -49,7 +165,7 @@ def load_dataset_tensor(path: str) -> torch.Tensor:
         return torch.from_numpy(df[cols].values.astype(np.float32)).float()
 
     if path.endswith(".pt") or path.endswith(".bin"):
-        obj = torch.load(path)
+        obj = safe_torch_load(path, map_location="cpu")
         t = obj["data"] if isinstance(obj, dict) and "data" in obj else obj
         if not isinstance(t, torch.Tensor) or t.ndim != 2 or t.shape[1] != 14:
             raise ValueError(f"{path} must contain Tensor [N,14]")
@@ -119,17 +235,38 @@ class MaskedKinematicsDataset(Dataset):
         return x, y, self.mask7
 
 
+def stats_dict_from_dataset(ds: MaskedKinematicsDataset) -> Dict[str, List[List[float]]]:
+    """Pack dataset normalization into a checkpoint-friendly dict."""
+    return {
+        "x_mean": ds.x_mean.tolist(),
+        "x_std": ds.x_std.tolist(),
+        "y_mean": ds.y_mean.tolist(),
+        "y_std": ds.y_std.tolist(),
+    }
+
+
 def make_infinite_loader(ds: Dataset, batch_size: int, num_workers: int, device: torch.device):
     pin = device.type == "cuda"
     loader = DataLoader(
         ds, batch_size=batch_size, shuffle=True, drop_last=True,
-        num_workers=num_workers, pin_memory=pin
+        num_workers=num_workers, pin_memory=pin,
+        persistent_workers=(num_workers > 0)
     )
     def gen():
         while True:
             for b in loader:
                 yield b
     return gen()
+
+
+def stats_dict_from_dataset(ds: "MaskedKinematicsDataset") -> Dict[str, list]:
+    """Serialize per-task normalization stats to save in checkpoints."""
+    return {
+        "x_mean": ds.x_mean.tolist(),
+        "x_std": ds.x_std.tolist(),
+        "y_mean": ds.y_mean.tolist(),
+        "y_std": ds.y_std.tolist(),
+    }
 
 
 # -------------------------
@@ -212,8 +349,8 @@ def masked_mse(pred: torch.Tensor, target: torch.Tensor, mask: torch.Tensor, eps
 def try_load_state(model: nn.Module, ckpt_path: Optional[str], device: torch.device):
     if ckpt_path is None or not os.path.exists(ckpt_path):
         return False
-    ckpt = torch.load(ckpt_path, map_location=device)
-    sd = ckpt["model_state_dict"] if isinstance(ckpt, dict) and "model_state_dict" in ckpt else ckpt
+    ckpt = safe_torch_load(ckpt_path, map_location=device)
+    sd = extract_state_dict(ckpt)
     missing, unexpected = model.load_state_dict(sd, strict=False)
     print(f"[INFO] Loaded init from {ckpt_path}")
     if missing:   print(f"[INFO]  missing keys (ok for mask_proj): {missing[:5]}{'...' if len(missing)>5 else ''}")
@@ -234,8 +371,11 @@ def train_multitask(
     device: torch.device,
     log_dir: str,
     out_dir: str,
+    task_norm: Dict[str, Dict[str, List[List[float]]]],
     save_every: int = 2000,
     grad_clip: float = 1.0,
+    print_every: int = 50,
+    eval_every: int = 500,
 ):
     os.makedirs(out_dir, exist_ok=True)
     writer = SummaryWriter(log_dir=log_dir)
@@ -250,7 +390,15 @@ def train_multitask(
     model.to(device)
     device_type = device.type
 
-    pbar = tqdm(range(steps), desc=f"multitask-train({mode})", ncols=140)
+    pbar = tqdm(
+        range(steps),
+        desc=f"multitask-train({mode})",
+        ncols=140,
+        dynamic_ncols=True,
+        leave=True,
+        file=sys.stdout,
+        mininterval=0.5,
+    )
     for it in pbar:
         tname = random.choice(task_names)
         x, y, mask = next(task_gens[tname])
@@ -260,7 +408,7 @@ def train_multitask(
         mask = mask.to(device, non_blocking=(device_type == "cuda"))
 
         model.train()
-        opt.zero_grad()
+        opt.zero_grad(set_to_none=True)
 
         if mode == "fk":
             yhat = model(x, mask)
@@ -280,10 +428,11 @@ def train_multitask(
         opt.step()
 
         writer.add_scalar(f"train/{tname}_loss", loss.item(), it)
-        pbar.set_postfix(task=tname, loss=f"{loss.item():.4f}")
+        if (it + 1) % max(1, print_every) == 0:
+            pbar.set_postfix(task=tname, loss=f"{loss.item():.4f}")
 
         # periodic quick eval: average one batch from each task
-        if (it + 1) % 500 == 0:
+        if (it + 1) % max(1, eval_every) == 0:
             model.eval()
             with torch.no_grad():
                 losses = []
@@ -308,12 +457,30 @@ def train_multitask(
 
                 if avg < best:
                     best = avg
-                    torch.save({"model_state_dict": model.state_dict(), "mode": mode, "aux_loss_weight": aux_weight}, best_path)
+                    torch.save(
+                        {
+                            "model_state_dict": model.state_dict(),
+                            "mode": mode,
+                            "aux_loss_weight": aux_weight,
+                            "task_norm": task_norm,
+                            "step": it + 1,
+                        },
+                        best_path,
+                    )
                     print(f"[INFO] New best avg loss {best:.6f} -> {best_path}")
 
         if save_every and (it + 1) % save_every == 0:
             path = os.path.join(out_dir, f"multitask_{mode}_step{it+1}.pt")
-            torch.save({"model_state_dict": model.state_dict(), "mode": mode, "aux_loss_weight": aux_weight}, path)
+            torch.save(
+                {
+                    "model_state_dict": model.state_dict(),
+                    "mode": mode,
+                    "aux_loss_weight": aux_weight,
+                    "task_norm": task_norm,
+                    "step": it + 1,
+                },
+                path,
+            )
 
     writer.close()
     print(f"[INFO] Done. Best avg loss (quick-eval): {best:.6f}")
@@ -329,9 +496,9 @@ def parse_args():
     p.add_argument("--task_7dof", type=str, required=True)
 
     p.add_argument("--hidden_dim", type=int, default=1024)
-    p.add_argument("--num_blocks", type=int, default=4)
+    p.add_argument("--num_blocks", type=int, default=8)
 
-    p.add_argument("--batch_size", type=int, default=2048)
+    p.add_argument("--batch_size", type=int, default=8192)
     p.add_argument("--num_workers", type=int, default=4)
     p.add_argument("--lr", type=float, default=1e-3)
     p.add_argument("--steps", type=int, default=200_000)
@@ -344,13 +511,28 @@ def parse_args():
     p.add_argument("--log_dir", type=str, default="runs/multitask_masked")
     p.add_argument("--out_dir", type=str, default="runs/multitask_masked_ckpts")
 
-    p.add_argument("--max_samples_per_task", type=int, default=10_000_000)
+    p.add_argument("--max_samples_per_task", type=int, default=15_000_000)
 
-    # optional warm-starts
-    p.add_argument("--init_ckpt", type=str, default=None, help="Optional single-task checkpoint to warm-start (e.g., 7DOF).")
+    # Back-compat: single warm-start checkpoint
+    p.add_argument(
+        "--init_ckpt",
+        type=str,
+        default=None,
+        help="Back-compat: optional single-task checkpoint to warm-start (e.g., 7DOF).",
+    )
+
+    # Recommended: per-task warm-start checkpoints (can be averaged)
+    p.add_argument("--init_ckpt_5dof", type=str, default=None, help="Optional 5DOF checkpoint (same mode).")
+    p.add_argument("--init_ckpt_6dof", type=str, default=None, help="Optional 6DOF checkpoint (same mode).")
+    p.add_argument("--init_ckpt_7dof", type=str, default=None, help="Optional 7DOF checkpoint (same mode).")
 
     # std floor for IK target (deg)
     p.add_argument("--std_floor_q_deg", type=float, default=1.0)
+
+    # logging / saving
+    p.add_argument("--print_every", type=int, default=50)
+    p.add_argument("--eval_every", type=int, default=500)
+    p.add_argument("--save_every", type=int, default=5000)
 
     return p.parse_args()
 
@@ -391,6 +573,13 @@ def main():
     ds6 = MaskedKinematicsDataset(t6, mode=args.mode, mask7=mask_6, std_floor_q_rad=std_floor_q_rad)
     ds7 = MaskedKinematicsDataset(t7, mode=args.mode, mask7=mask_7, std_floor_q_rad=std_floor_q_rad)
 
+    # Save per-task normalization into the checkpoint so eval scripts can reproduce training normalization.
+    task_norm = {
+        "5dof": stats_dict_from_dataset(ds5),
+        "6dof": stats_dict_from_dataset(ds6),
+        "7dof": stats_dict_from_dataset(ds7),
+    }
+
     task_gens = {
         "5dof": make_infinite_loader(ds5, args.batch_size, args.num_workers, device),
         "6dof": make_infinite_loader(ds6, args.batch_size, args.num_workers, device),
@@ -403,12 +592,27 @@ def main():
     else:
         model = IKResNetDualHead_Mask(in_dim=7, out_dim=7, hidden_dim=args.hidden_dim, num_blocks=args.num_blocks)
 
-    # warm-start (loads old weights; mask_proj stays zero-init)
-    if args.init_ckpt:
-        try_load_state(model, args.init_ckpt, device)
+    # init: averaged 5/6/7 preferred; fallback to --init_ckpt
+    init_paths: List[str] = []
+    if args.init_ckpt_5dof:
+        init_paths.append(args.init_ckpt_5dof)
+    if args.init_ckpt_6dof:
+        init_paths.append(args.init_ckpt_6dof)
+    if args.init_ckpt_7dof:
+        init_paths.append(args.init_ckpt_7dof)
+
+    if not init_paths and args.init_ckpt:
+        init_paths = [args.init_ckpt]
+
+    if init_paths:
+        ok = init_model_from_checkpoints(model, init_paths, device)
+        if not ok:
+            print("[WARN] No valid init checkpoints found. Training from random init.")
+    else:
+        print("[INFO] No init checkpoints provided. Training from random init.")
 
     log_dir = os.path.join(args.log_dir, f"{args.mode}_iiwa_5_6_7")
-    out_dir = os.path.join(args.out_dir, f"{args.mode}_iiwa_5_6_7")
+    out_dir = log_dir
 
     train_multitask(
         mode=args.mode,
@@ -420,8 +624,11 @@ def main():
         device=device,
         log_dir=log_dir,
         out_dir=out_dir,
-        save_every=5000,
+        task_norm=task_norm,
+        save_every=args.save_every,
         grad_clip=args.grad_clip,
+        print_every=args.print_every,
+        eval_every=args.eval_every,
     )
 
 
