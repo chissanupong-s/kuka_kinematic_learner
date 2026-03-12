@@ -2,16 +2,16 @@
 set -euo pipefail
 
 # --------- EDIT THESE PATHS ----------
-CKPT="/home/wish/isaaclab/kuka_14_kinematic_learner/original/ext_script/scripts/train/runs/multitask/5/fk_iiwa_5_6_7/multitask_fk_best.pt"
+CKPT="/home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/runs/multitask/seperate_weight/1/fk_iiwa_5_6_7/multitask_fk_best.pt"
 
-DATA_5="/home/wish/isaaclab/kuka_14_kinematic_learner/original/ext_script/data/narrowed/5DOF_8deg.pt_part000.pt"
-DATA_6="/home/wish/isaaclab/kuka_14_kinematic_learner/original/ext_script/data/narrowed/6DOF_12deg.pt_part000.pt"
-DATA_7="/home/wish/isaaclab/kuka_14_kinematic_learner/original/ext_script/data/narrowed/7DOF_15deg/7DOF_15deg_part001.pt"
+DATA_5="/home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/data/narrowed/5DOF_8deg.pt_part000.pt"
+DATA_6="/home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/data/narrowed/6DOF_12deg.pt_part000.pt"
+DATA_7="/home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/data/narrowed/7DOF_15deg/7DOF_15deg_part001.pt"
 
 EVAL_SCRIPT="eval_multitask.py"
 
 # Use the real IsaacLab launcher path (not an alias)
-ISAACLAB_SH="/home/wish/isaaclab/IsaacLab/isaaclab.sh"
+ISAACLAB_SH="/home/ubuntu/IsaacLab/isaaclab.sh"
 # ------------------------------------
 
 DEVICE="cuda"
