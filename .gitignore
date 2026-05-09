@@ -79,6 +79,7 @@ original/ext_script/scripts/train/model_tracking/*
 # Keep only the Stage-2 shared meta-kinematics checkpoint (used as --ckpt for all Stage-3 adaptation experiments)
 !original/ext_script/scripts/train/model_tracking/multitask_fk_best.pt
 !original/ext_script/scripts/train/model_tracking/README.md
+!original/ext_script/scripts/train/model_tracking/setup_checkpoints.sh
 
 # Report drafts: keep only the latest, ignore originals/backups
 original/ext_script/scripts/train/report_resources/report_drafts/originals/
