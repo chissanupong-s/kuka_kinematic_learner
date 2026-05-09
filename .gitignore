@@ -56,3 +56,43 @@ original/**/datasets/
 .vscode/
 *.vc.db
 *.vc.db-*
+
+# ============================================================
+# Added 2026-05-09: exclude large training artefacts and outputs
+# ============================================================
+
+# PyTorch model checkpoints (regeneratable; >50MB each)
+*.pt
+*.pth
+*.ckpt
+!**/requirements*.txt   # safety: keep requirements files even if regex catches anything
+
+# TensorBoard event files
+events.out.tfevents.*
+*.tfevents.*
+
+# Tier-4 experiment outputs (per-seed runs, multi-GB)
+original/ext_script/scripts/train/tier4_runs/
+
+# Older model-tracking checkpoints
+original/ext_script/scripts/train/model_tracking/*
+# Keep only the Stage-2 shared meta-kinematics checkpoint (used as --ckpt for all Stage-3 adaptation experiments)
+!original/ext_script/scripts/train/model_tracking/multitask_fk_best.pt
+!original/ext_script/scripts/train/model_tracking/README.md
+
+# Report drafts: keep only the latest, ignore originals/backups
+original/ext_script/scripts/train/report_resources/report_drafts/originals/
+
+# Optional: ignore intermediate report drafts (keep only Final ones)
+# Uncomment if you want to ignore numbered version drafts:
+# original/ext_script/scripts/train/report_resources/report_drafts/*post_audit_v*.docx
+
+# Conference paper PDFs (keep .tex source, ignore compiled output)
+conference_resources/*.pdf
+conference_resources/*.aux
+conference_resources/*.log
+conference_resources/*.out
+conference_resources/*.bbl
+conference_resources/*.blg
+conference_resources/*.synctex.gz
+
