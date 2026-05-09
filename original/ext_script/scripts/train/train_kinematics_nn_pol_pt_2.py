@@ -118,6 +118,18 @@ def get_args():
             "(only used in ik mode: loss = L_q + w*(L_pos + L_ori))."
         ),
     )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Seed for the train/val/test split + parameter init + minibatch order.",
+    )
+    parser.add_argument(
+        "--max_samples",
+        type=int,
+        default=0,
+        help="If > 0, sub-sample the dataset to this many rows (for matching the report's 15M cap). 0 = use all.",
+    )
     return parser.parse_args()
 
 
@@ -412,9 +424,19 @@ def main():
     full_tensor = load_dataset_tensor(args.csv)  # [N,14]
     N_total = full_tensor.shape[0]
 
-    # shuffle rows reproducibly
-    perm = torch.randperm(N_total)
-    full_tensor = full_tensor[perm]
+    # Optional sub-sample (e.g., to match the report's stated 15M cap)
+    if args.max_samples > 0 and args.max_samples < N_total:
+        # Sub-sample reproducibly using the seed (so all DoFs at the same seed
+        # see a consistent subset, but different seeds see different subsets)
+        sub_perm = torch.Generator().manual_seed(args.seed)
+        sub_idx = torch.randperm(N_total, generator=sub_perm)[: args.max_samples]
+        full_tensor = full_tensor[sub_idx]
+        N_total = full_tensor.shape[0]
+        print(f"[INFO] Sub-sampled to max_samples={args.max_samples}: N={N_total}")
+
+    # shuffle rows reproducibly (seeded by args.seed)
+    perm = torch.Generator().manual_seed(args.seed + 1)
+    full_tensor = full_tensor[torch.randperm(N_total, generator=perm)]
 
     # ---- build normalized dataset ----
     full_dataset = KinematicsTensorDataset(full_tensor, mode=args.mode)
@@ -436,7 +458,15 @@ def main():
     print(f"[INFO] Total samples: {N}")
     print(f"[INFO] Train: {N_train}, Val: {N_val}, Test: {N_test}")
 
-    generator = torch.Generator().manual_seed(42)
+    # Seed everything (parameter init, dataloader shuffle, split) for reproducibility + multi-seed runs
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
+    import random as _random
+    _random.seed(args.seed)
+    np.random.seed(args.seed)
+
+    generator = torch.Generator().manual_seed(args.seed)
     train_dataset, val_dataset, test_dataset = random_split(
         full_dataset, [N_train, N_val, N_test], generator=generator
     )
