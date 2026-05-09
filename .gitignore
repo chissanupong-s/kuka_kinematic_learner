@@ -97,3 +97,9 @@ conference_resources/*.bbl
 conference_resources/*.blg
 conference_resources/*.synctex.gz
 
+
+# HF token (never commit)
+.hf_token
+
+# 360 MB of intermediate experiment results (regeneratable; not needed for report submission)
+original/ext_script/scripts/train/report_resources/results/

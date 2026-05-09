@@ -1,0 +1,154 @@
+================================================================================
+  FIGURE 3.1 — META-KINEMATICS THREE-STAGE PIPELINE
+  KUKA iiwa 14 across 5, 6, 7 DoF configurations
+================================================================================
+
+
+  STAGE 1                       STAGE 2                       STAGE 3
+  ─────────────                 ───────────────────           ──────────────
+  Single-task                   Shared meta-kinematics        Per-DoF
+  initialisation                training                      adaptation
+  (one model per DoF)           (single shared model)         (one model per DoF)
+
+
+  ┌──────────────┐
+  │  5-DoF data  │
+  │  16.2 M smp  │── train ──→ ┌──────────────┐
+  └──────────────┘             │  ResMLP      │
+                               │  no mask     │── θ_5dof ─┐
+                               │  hidden=1024 │           │
+                               │  blocks=8    │           │
+                               └──────────────┘           │
+                                                          │  AVERAGE
+  ┌──────────────┐                                        │  the 3
+  │  6-DoF data  │             ┌──────────────┐           │  Stage-1
+  │  34.9 M smp  │── train ──→ │  ResMLP      │           │  weights
+  └──────────────┘             │  no mask     │── θ_6dof ─┤  →
+                               └──────────────┘           │  warm-start
+                                                          │  Stage 2
+                                                          │
+  ┌──────────────┐                                        │  (mask_proj
+  │  7-DoF data  │             ┌──────────────┐           │   initialised
+  │   3.9 M smp  │── train ──→ │  ResMLP      │           │   to zero)
+  └──────────────┘             │  no mask     │── θ_7dof ─┘
+                               └──────────────┘
+                                                                       │
+                                                                       │
+                                                                       ↓
+                                          ┌─────────────────────────────────────┐
+                                          │       ResMLP_Mask                   │
+                                          │   (mask_proj added)                 │
+                                          │                                     │
+            5-DoF data ──┐                │   trained on UNION                  │
+                         │                │   of  5 + 6 + 7 DoF                 │
+            6-DoF data ──┼── union ────→  │   datasets (sampled                 │
+                         │                │   uniformly per step)               │
+            7-DoF data ──┘                │                                     │
+                                          │   loss = MSE on per-task            │
+                                          │          standardised pose          │
+                                          │                                     │
+                                          │   → θ_shared (Stage 2 best.pt)      │
+                                          └─────────────────────────────────────┘
+                                                          │
+                                                          │  load θ_shared as init
+                                                          │  (full backbone +
+                                                          │   trained mask_proj)
+                                                          ↓
+
+                                          ┌──────────┬──────────┬──────────┐
+                                          │          │          │          │
+                                          ↓          ↓          ↓
+                                     ResMLP_Mask ResMLP_Mask ResMLP_Mask
+                                       (5-DoF      (6-DoF      (7-DoF
+                                        support)    support)    support)
+                                          │          │          │
+                                          │ short    │ short    │ short
+                                          │ fine-    │ fine-    │ fine-
+                                          │ tune     │ tune     │ tune
+                                          ↓          ↓          ↓
+                                       θ_adapt_5  θ_adapt_6  θ_adapt_7
+                                       ─────────  ─────────  ─────────
+                                       (the per-DoF deployable models)
+
+
+  ────────────────────────────────────────────────────────────────────────
+  Caption: Three-stage meta-kinematics pipeline. Stage 1 trains one
+  single-task ResMLP per DoF on its own dataset. The three Stage-1
+  checkpoints are averaged to warm-start a shared ResMLP_Mask in Stage 2,
+  trained jointly on the union of all three datasets. The Stage-2 shared
+  checkpoint is then fine-tuned on each DoF's support set in Stage 3,
+  producing a deployable per-DoF model in 0.111-0.365 hr (vs 1.873-22.12
+  hr for the single-task baselines).
+  ────────────────────────────────────────────────────────────────────────
+
+
+
+================================================================================
+  FIGURE 3.2 — ResidualMLP_Mask ARCHITECTURE  (Stages 2 and 3)
+================================================================================
+
+
+           Joint vector              Active-DoF mask
+           q ∈ ℝ⁷                    m_τ ∈ {0,1}⁷
+           (zero-clamped              (1 for active joint,
+            inactive joints)           0 for inactive)
+                │                          │
+                ↓                          ↓
+          ┌──────────┐               ┌──────────────┐
+          │  fc_in   │               │  mask_proj   │
+          │  Linear  │               │  Linear      │  (bias = False;
+          │  7 → 1024│               │  7 → 1024    │   weight init = 0,
+          └──────────┘               └──────────────┘   trained from there)
+                │                          │
+                └─────────── + ────────────┘   (additive)
+                            │
+                            ↓
+                          ReLU
+                            │
+                            ↓
+                ╔══════════════════════════════╗
+                ║      ResBlock  × 8           ║
+                ║                              ║
+                ║   ┌─────────────────────┐    ║
+                ║   │  Linear  1024→1024  │    ║
+                ║   │      ↓              │    ║
+                ║   │     ReLU            │    ║
+                ║   │      ↓              │    ║
+                ║   │   Dropout(p=0.1)    │    ║
+                ║   │      ↓              │    ║
+                ║   │  Linear  1024→1024  │    ║
+                ║   │      ↓              │    ║
+                ║   │  +  (skip from in)  │    ║
+                ║   │      ↓              │    ║
+                ║   │     ReLU            │    ║
+                ║   └─────────────────────┘    ║
+                ╚══════════════════════════════╝
+                            │
+                            ↓
+                       ┌─────────┐
+                       │ fc_out  │   Linear  1024 → 7
+                       └─────────┘
+                            │
+                            ↓
+                  [ t̂ ∈ ℝ³  ,  r̂ ∈ ℝ⁴ ]
+                  position    quaternion
+                  (raw)       (unit-normalised in
+                               loss / evaluation,
+                               not in the graph)
+
+
+  ────────────────────────────────────────────────────────────────────────
+  Stage-1 backbone is the same residual-block stack but WITHOUT the
+  mask_proj branch (Stage-1 ResMLP takes only q as input). The Stage-1
+  ResBlock has identical layers to the Stage-2/3 ResBlock but does NOT
+  apply Dropout in its forward pass, so its forward is:
+      x → fc1 → ReLU → fc2 → +skip → ReLU
+  ────────────────────────────────────────────────────────────────────────
+
+
+  TOTAL PARAMETERS:
+    Stage 1 (per DoF):  ~16.8 million
+    Stage 2 / Stage 3:  ~16.8 million (mask_proj adds 7 × 1024 = 7 168)
+
+
+================================================================================

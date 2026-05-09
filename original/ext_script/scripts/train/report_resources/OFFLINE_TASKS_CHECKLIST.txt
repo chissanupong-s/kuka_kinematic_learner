@@ -1,0 +1,307 @@
+================================================================================
+  FYP REPORT — OFFLINE TASKS CHECKLIST
+  Things you can do anywhere (phone, tablet, another laptop) — no remote needed
+================================================================================
+
+Author:        Chissanupong Saengsint  (FYP, U Birmingham)
+Last updated:  2026-05-07
+Submission:    Friday 8 May 2026
+
+INSTRUCTIONS
+  1. Download the latest report from the remote:
+       /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/
+        report_resources/report_drafts/
+         FYP_Report_2_Chissanupong_2881058__post_audit_v10_diagrams_20260507_045433.docx
+
+  2. Open it in Word (Office, Google Docs, Word Online, or Pages — anything
+     that can edit .docx).
+
+  3. Work through the checklist below. Items marked "MANDATORY" must be
+     completed before submission. The rest are polish.
+
+  4. When you're done, upload the edited .docx back to the same folder on
+     the remote (or any cloud sync, then I'll fetch it).
+
+  5. Tell Claude "I uploaded my edits to <path>" and I'll integrate them
+     with the data-size sweep results (which are still computing on the
+     remote).
+
+
+
+================================================================================
+                              MANDATORY ITEMS
+================================================================================
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TASK 1.   Self-assessment box  Q1 ("What went well?")                  [10m] │
+│           Location:  near the top of the report, just under the              │
+│                      "Project Self-Assessment" heading. It's a 2-cell        │
+│                      table; the second cell currently contains the           │
+│                      placeholder.                                            │
+│           Word limit: ~50 words                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+CURRENT PLACEHOLDER TEXT TO REPLACE:
+
+  "[Student to complete: ~50 words. Suggested topics to draw on —
+  enjoying the simulation work in Isaac Lab, observing the shared
+  meta-model generalise across DoF configurations, the 99.5%
+  training-time reduction in the 7-DoF case, and the experience of
+  writing the conference paper.]"
+
+WHAT TO WRITE  (your own words, ~50):
+  • What went well?
+  • One technical thing you found genuinely interesting
+  • One personal/learning thing you got out of it
+
+DRAFT (you can adapt or write entirely fresh):
+
+  "I particularly enjoyed building up the simulation pipeline in Isaac
+  Lab, and I found it satisfying to see a single shared model absorb
+  the kinematic structure of the 5, 6 and 7-DoF iiwa 14 settings.
+  The 99.5% wall-clock reduction in the 7-DoF case was the most
+  rewarding empirical result. The exercise of preparing a conference
+  paper alongside the FYP also strengthened my technical writing."
+
+  (~60 words — feel free to trim or rephrase entirely.)
+
+
+   YOUR FINAL TEXT:
+
+   ___________________________________________________________________________
+
+   ___________________________________________________________________________
+
+   ___________________________________________________________________________
+
+   ___________________________________________________________________________
+
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TASK 2.   Self-assessment box  Q2 ("What did you find difficult?")    [10m]  │
+│           Location:  the next 2-cell table, just below Q1.                   │
+│           Word limit: ~50 words                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+CURRENT PLACEHOLDER TEXT TO REPLACE:
+
+  "[Student to complete: ~50 words. Suggested topics — depth of
+  learning required for meta-learning literature, interpreting
+  orientation error in quaternion space, scoping the real-robot
+  validation out due to timeline and access constraints, and
+  judgements when the multitask model under-performed the single-task
+  on 7-DoF position.]"
+
+WHAT TO WRITE (your own words, ~50):
+  • What was difficult? (be honest — not too negative)
+  • One thing you'd change if you did it again
+
+DRAFT (you can adapt):
+
+  "Building the meta-learning intuition required digging through more
+  literature than I expected, and reasoning about orientation error
+  in quaternion space took me time to get used to. I had to scope
+  the real-robot validation out because hardware access and the
+  timeline didn't line up. Looking back, I would have committed
+  earlier to multi-seed evaluation across all three pipeline stages."
+
+  (~60 words.)
+
+
+   YOUR FINAL TEXT:
+
+   ___________________________________________________________________________
+
+   ___________________________________________________________________________
+
+   ___________________________________________________________________________
+
+   ___________________________________________________________________________
+
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TASK 3.   Appendix D — Generative AI declaration                       [5m]  │
+│           Location:  Appendix D, Table D.1.                                  │
+│           This is MANDATORY by School of Engineering policy.                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+INTRO PARAGRAPH ABOVE THE TABLE — currently starts with "[Student to confirm
+and complete this section before submission.]" — DELETE the bracketed phrase
+so the paragraph begins simply with "The table below lists the generative AI
+tools used during the project, …".
+
+TABLE D.1 — currently has 3 placeholder rows:
+
+  | Tool          | Used for                                              | Frequency       |
+  | [Tool name 1] | [e.g., debugging Python errors, …]                    | [e.g., regularly] |
+  | [Tool name 2] | [e.g., explaining concepts during literature review]  | [e.g., occasionally] |
+  | [Tool name 3] | [e.g., assisting with LaTeX/Word formatting]          | [e.g., occasionally] |
+
+REPLACE WITH THE TOOLS YOU ACTUALLY USED. Be honest — examiners look at this
+section. Examples (adapt to your reality):
+
+  | Claude Code (Anthropic)  | Methodology audit of training scripts;        | Heavy in the   |
+  |                          | proposing data-efficiency / multi-seed        | final week     |
+  |                          | experiments; drafting figures and Appendix    |                |
+  |                          | E listings; rewriting §6.3 to address         |                |
+  |                          | supervisor feedback. All output reviewed,     |                |
+  |                          | edited and verified by author.                |                |
+  | ChatGPT (GPT-4)          | Occasional explanation of meta-learning       | Occasionally   |
+  |                          | concepts during literature review;            |                |
+  |                          | sanity-checking quaternion-distance maths.    |                |
+  | GitHub Copilot           | Inline code completion in PyTorch scripts.    | Regularly      |
+  | (delete a row if you didn't use that tool — and add rows for any tool I missed) |
+
+
+    YOUR FINAL TABLE — fill in the rows that match what you actually used:
+
+   Tool 1:  ____________________________________________________________________
+   Used for: ___________________________________________________________________
+   Frequency: __________________________________________________________________
+
+   Tool 2:  ____________________________________________________________________
+   Used for: ___________________________________________________________________
+   Frequency: __________________________________________________________________
+
+   Tool 3:  ____________________________________________________________________
+   Used for: ___________________________________________________________________
+   Frequency: __________________________________________________________________
+
+   Tool 4:  ____________________________________________________________________
+   Used for: ___________________________________________________________________
+   Frequency: __________________________________________________________________
+
+
+
+================================================================================
+                            STRONGLY RECOMMENDED
+================================================================================
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TASK 4.   Read-through                                                [30m]  │
+│           Goal: catch any prose that reads oddly, especially in the new      │
+│           sections that were AI-rewritten.                                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Sections to focus on (these are the ones that were significantly rewritten
+in v8/v9/v10):
+
+  ☐ §3.3  Backbone description (now mentions mask_proj and dropout)
+  ☐ §3.5  Eq 3.3 split into 3.3a (Stages 1-2) and 3.3b (Stage 3)
+  ☐ §4.4  Per-task standardisation + held-out clarification
+  ☐ §4.5  Eq 4.1 — mean Euclidean error (replaces RMSE)
+  ☐ §5.4  Multi-seed 4th observation paragraph (with t-test)
+  ☐ §6.1  7-DoF interpretation paragraphs (variance acknowledgement)
+  ☐ §6.3  Comparison with prior work (3-paragraph rewrite — supervisor's ask)
+  ☐ §6.4  Limitations — multi-seed paragraph (precise variance summary)
+  ☐ Abstract — multi-seed framing
+  ☐ Listings E.1, E.2, E.3 — corrected to match actual code
+
+For anything that reads oddly, just leave a Word comment ("This sentence
+seems off") — when you upload back, I can iterate on those specifically.
+
+
+
+================================================================================
+                                 OPTIONAL POLISH
+================================================================================
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TASK 5.   Cosmetic Unicode pass                                       [5m]   │
+│           A few rewritten paragraphs spell "t-hat" / "r-hat" instead of      │
+│           the proper math symbols.                                           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+In Word's Find & Replace (Ctrl+H):
+
+  Find:    t-hat        Replace with:  t̂   (t with circumflex; can copy from here)
+  Find:    r-hat        Replace with:  r̂   (r with circumflex)
+
+If your keyboard can't type the circumflex, leave them as-is — readers will
+understand "t-hat" perfectly well.
+
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TASK 6.   Replace Figure 5.7 with the 95% CI version (optional)       [1m]   │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+The CI-shaded version of Figure 5.7 is on the remote at:
+  report_resources/figures/appendix_tb_plots/20260507_045433/
+   fig_multiseed_with_CI_20260507_045433.png
+
+If you sync that folder along with the docx, in Word:
+  1. Right-click the existing Figure 5.7 image
+  2. Choose "Change Picture" > "From File"
+  3. Select the CI-shaded PNG above
+
+The CI-shaded version is more rigorous (shows the 95% CIs we mention in §5.4)
+but the existing version (just mean ± std bars) is also fine.
+
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TASK 7.   Table 6.1 — fill prior-work numbers if you have access      [10m]  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+The cells currently say "(see cited paper; not extracted in this submission)".
+If you have ScienceDirect / library access, look up:
+
+  • KineNN (Diprasetya et al. 2025), Robotics & Computer-Integrated Manufacturing,
+    vol. 94, p. 102945. Find their reported position / orientation error on UR5
+    forward kinematics. Replace cell.
+
+  • Cursi et al. 2022 — search "Augmented NN in SE(3)" on Google Scholar.
+    Need to add a reference number to bibliography too if you fill this row.
+
+  • Köker et al. 2004, Robotics & Autonomous Systems vol. 49(3-4), pp. 227-234.
+    They report IK joint errors (not FK end-effector). If you can map IK joint
+    error to end-effector error via DH parameters, fill the row; otherwise
+    consider dropping the row.
+
+If you can't find the numbers in 10 minutes, leave the cells as-is — the
+table caption already explains why they're not transcribed.
+
+
+
+================================================================================
+                                  ALL DONE?
+================================================================================
+
+When you've finished all the items you want to do:
+
+  1. Save the docx (in Word: File > Save).
+
+  2. Upload it back to the remote. Either:
+     a) scp / rsync to /home/ubuntu/wish/kuka_kinematic_learner/original/
+        ext_script/scripts/train/report_resources/report_drafts/
+        FYP_Report_2_Chissanupong_2881058__YOUR_EDIT.docx
+     b) Drop on a cloud drive that the remote can read
+
+  3. Tell Claude (in any future session): "I uploaded my edits to <path>"
+     Claude will:
+       - Diff your edits against v10
+       - Apply data-size sweep results (Fig 5.8) on top of your edits
+       - Save as v11_dataeff_with_user_edits
+
+WHAT IS HAPPENING ON THE REMOTE WHILE YOU'RE AWAY:
+
+  • The data-size sweep is running in the background (~3.7 hours)
+  • When it finishes (~15:00), Claude will automatically:
+      - Render Figure 5.8 (data-efficiency curve)
+      - Apply it to whichever docx is the latest
+      - Report the 7-DoF verdict
+  • If the machine reboots, see CONTINUATION_PLAN.md for recovery
+
+DO NOT CLOSE THE LAPTOP IF YOUR LAPTOP IS THE GPU MACHINE — the sweep needs
+the GPU running. If you must, configure the lid action to "do nothing" or
+"sleep display only" first.
+
+================================================================================
+                                  END OF FILE
+================================================================================
