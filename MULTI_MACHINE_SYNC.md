@@ -53,8 +53,16 @@ git push origin main
 
 The two machines should write to **different timestamped run directories**
 (`expL_singletask_regularized_<TS>` vs `expL_5_6dof_regularized_<TS>`), so
-file conflicts are unlikely. The most likely conflict source is the docx —
-only edit the docx on **one machine at a time**.
+file conflicts are unlikely. The most likely conflict source is human-edited
+text/binary files. Convention:
+
+> **Only Machine A edits these file types: `.docx`, `.tex`.**
+> Machine B does training only — never opens the FYP report or the
+> conference-paper LaTeX source.
+
+This means cross-machine conflicts on the report or paper are impossible
+by construction. Machine B's pulls only ever bring NEW changes to those
+files (from Machine A); it never tries to push competing versions.
 
 If git pull says there's a conflict in the docx:
 1. Pick the version the other machine pushed (their edits are usually later)

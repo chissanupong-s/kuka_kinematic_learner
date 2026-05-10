@@ -196,8 +196,11 @@ Full handling rule documented in
 
 ## What NOT to do on Machine B
 
-- **Do not edit the .docx**. Only Machine A edits the report. (Avoids merge
-  conflicts on the binary file.)
+- **Do not edit the FYP report (.docx) or the conference-paper LaTeX (.tex)**.
+  Only Machine A edits those file types. (Avoids merge conflicts on
+  binary/large text files.) If Machine A pushes updates to a `.docx` or
+  `.tex` file, Machine B's `git pull` will simply bring them down — that's
+  fine. Machine B just must never *write* to them.
 - **Do not run 7-DoF training**. Machine A is doing that. Running it here
   duplicates work and wastes ~6 hr of GPU time.
 - **Do not modify `expL_5_6dof_regularized.sh`** unless the user explicitly
