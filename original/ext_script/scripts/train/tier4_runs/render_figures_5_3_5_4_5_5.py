@@ -16,10 +16,10 @@ import matplotlib.pyplot as plt
 OUT_DIR = Path("/home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/report_resources/figures")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Position error (mm)
+# Position error (mm) — values from latest authoritative Table 5.1
 POS = {
-    "Single-task":                       [9.300, 11.000, 10.100],
-    "Shared meta-kinematics":            [6.800,  9.200, 10.900],
+    "Single-task":                       [9.308, 11.052, 10.137],
+    "Shared meta-kinematics":            [6.821,  9.235, 10.913],
     "Adapted (best, n=3 mean)":          [6.203,  8.900,  9.901],
 }
 # Orientation error (deg)
