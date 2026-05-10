@@ -27,10 +27,8 @@ SUMMARY="$OUTROOT/summary.txt"
 
 EPOCHS=200
 BATCH_SIZE=4096
-LR=2.5e-5                # FIXED LR — matches the primary machine's expL
+LR=2.25e-5               # FIXED LR — matches the primary machine's expL
                          # (no scheduler decay; mid-low rate held throughout).
-                         # Lowered from 3e-5 after early-stop fired too soon
-                         # at patience=15.
 HIDDEN_DIM=1024
 NUM_BLOCKS=8
 WEIGHT_DECAY=1e-4
