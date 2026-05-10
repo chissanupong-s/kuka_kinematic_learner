@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-#
-# Train neural kinematics model with full pose (position + quaternion orientation).
-# Modes:
-#   - fk: joint angles q -> pose (x,y,z,qw,qx,qy,qz)
-#   - ik: pose (x,y,z,qw,qx,qy,qz) -> joint angles q
-#
-# Supports datasets as:
-#   - CSV file with columns [q1..q7,x,y,z,qw,qx,qy,qz]
-#   - Single .pt/.bin Tensor
-#   - Directory of .pt/.bin shards
-#
-# Splits into train / val / test (default 50% / 20% / 30%)
-#
+# fk/ik trainer — q <-> pose with ResMLP backbone
 
 import argparse
 import os
@@ -27,9 +15,6 @@ POSE_COLS = ["x", "y", "z", "qw", "qx", "qy", "qz"]
 JOINT_COLS = [f"q{i}" for i in range(1, 8)]
 
 
-# ---------------------------------------------------------------------------
-# 1. CLI
-# ---------------------------------------------------------------------------
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -133,9 +118,6 @@ def get_args():
     return parser.parse_args()
 
 
-# ---------------------------------------------------------------------------
-# 2. Dataset (pure tensor)
-# ---------------------------------------------------------------------------
 
 def load_dataset_tensor(path: str) -> torch.Tensor:
     """
@@ -290,9 +272,6 @@ class KinematicsTensorDataset(Dataset):
         return x, y
 
 
-# ---------------------------------------------------------------------------
-# 3. Models
-# ---------------------------------------------------------------------------
 
 class ResBlock(nn.Module):
     def __init__(self, dim: int, p_drop: float = 0.1):
@@ -366,9 +345,6 @@ class IKResNetDualHead(nn.Module):
         return q_pred, pos_pred, ori_pred
 
 
-# ---------------------------------------------------------------------------
-# 4. Helpers
-# ---------------------------------------------------------------------------
 
 def evaluate_on_loader(model, loader, device, criterion, aux_weight, mode: str):
     model.eval()
@@ -412,9 +388,6 @@ def evaluate_on_loader(model, loader, device, criterion, aux_weight, mode: str):
     return total_loss, total_loss_q, total_loss_pos, total_loss_ori
 
 
-# ---------------------------------------------------------------------------
-# 5. Main training
-# ---------------------------------------------------------------------------
 
 def main():
     args = get_args()

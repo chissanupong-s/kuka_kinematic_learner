@@ -1,21 +1,4 @@
-# generate_iiwa14_grid_dataset.py
-#
-# Generate a *static grid* kinematics dataset for KUKA iiwa14 (EE = robotiq_base_link)
-# by sweeping joints from lower to upper limits in fixed angle steps.
-#
-# For each joint configuration, we record:
-#   q1..q7, x, y, z, qw, qx, qy, qz
-#
-# Run example (for 6DOF config, 10° steps, limited samples):
-#   ./isaaclab.sh -p original/scripts/generate_iiwa14_grid_dataset.py \
-#       --num_envs 1 \
-#       --step_deg 10.0 \
-#       --max_samples 100000 \
-#       --output_csv data/iiwa14_grid_6dof_10deg.csv \
-#       --headless
-#
-# NOTE: Full joint-space grids get astronomically large very fast.
-#       Start with small ranges / few joints / larger step_deg to test.
+# grid dataset gen for iiwa14 — sweep joints in fixed deg steps, dump q + pose
 
 import argparse
 import csv
@@ -24,10 +7,6 @@ import math
 from itertools import product
 
 from isaaclab.app import AppLauncher
-
-# ---------------------------------------------------------------------#
-# 1. CLI + launch Isaac Sim
-# ---------------------------------------------------------------------#
 
 parser = argparse.ArgumentParser(
     description="Generate static joint-space grid dataset for KUKA iiwa14."
@@ -58,9 +37,6 @@ args_cli = parser.parse_args()
 app_launcher = AppLauncher(args_cli)
 simulation_app = app_launcher.app
 
-# ---------------------------------------------------------------------#
-# 2. Heavy imports (after app start)
-# ---------------------------------------------------------------------#
 
 import numpy as np
 import torch
@@ -81,9 +57,6 @@ from original.asset.iiwa14 import KUKA_IIWA14_CFG, KUKA_IIWA14_6DOF_CFG, KUKA_II
 #   robot_selection = KUKA_IIWA14_6DOF_CFG   # 6 DOF version
 #   robot_selection = KUKA_IIWA14_5DOF_CFG   # 5 DOF version
 robot_selection = KUKA_IIWA14_CFG  # <-- change this as needed
-# ---------------------------------------------------------------------#
-# 3. Scene config
-# ---------------------------------------------------------------------#
 
 @configclass
 class IIWA14SceneCfg(InteractiveSceneCfg):
@@ -102,9 +75,6 @@ class IIWA14SceneCfg(InteractiveSceneCfg):
         prim_path="{ENV_REGEX_NS}/IIWA14bot"
     )
 
-# ---------------------------------------------------------------------#
-# 4. Grid dataset generation
-# ---------------------------------------------------------------------#
 
 def generate_grid_dataset(
     sim: sim_utils.SimulationContext,
@@ -289,9 +259,6 @@ def generate_grid_dataset(
         writer.writerows(rows)
 
     print(f"[INFO] Saved {len(rows)} grid samples to '{output_csv}'")
-# ---------------------------------------------------------------------#
-# 5. Main
-# ---------------------------------------------------------------------#
 
 def main():
     # Create sim config on the requested device

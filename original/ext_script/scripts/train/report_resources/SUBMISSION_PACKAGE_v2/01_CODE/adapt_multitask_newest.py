@@ -1,24 +1,4 @@
 #!/usr/bin/env python3
-"""adapt_multitask_fk_weighted.py
-
-Adapt a multitask FK/IK model to a target DOF using a small support set and
-evaluate on a query set.
-
-This is a **FK-focused** variant of `adapt_multitask_newest.py` with improved
-control over the FK loss balance:
-  - FK support loss:  pos_weight * pos_mse  +  ori_weight * ori_geodesic_rad2
-  - FK best-step scoring: score_pos_w * pos_mae_m + score_ori_w * ori_deg
-
-Why this matters:
-  - Position and orientation live in different numeric units (meters vs radians/deg).
-  - Without explicit weights, adaptation may optimize position while ignoring
-    orientation (or vice versa), especially across DOFs.
-
-Notes:
-  - FK uses **raw** pose units for metrics (denormalized by support stats).
-  - Orientation error is computed as geodesic angle between quaternions.
-  - IK path is kept for compatibility (unchanged from the original script).
-"""
 
 import argparse, os, math, time
 from typing import Dict, Tuple, Set, List

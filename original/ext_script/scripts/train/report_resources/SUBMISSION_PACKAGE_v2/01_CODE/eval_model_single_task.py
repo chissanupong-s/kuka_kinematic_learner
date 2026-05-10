@@ -1,21 +1,5 @@
 #!/usr/bin/env python3
-"""
-Evaluate a trained FK / IK kinematics network on a dataset.
-
-This version reports:
-- normalized losses, same as training space
-- mean position error in meters
-- RMSE position error in meters
-- mean orientation error in degrees
-- RMSE orientation error in degrees
-
-For FK:
-- position/orientation error is computed from predicted pose vs target pose
-
-For IK:
-- position/orientation error is computed from the auxiliary pose heads
-  against the input pose target
-"""
+# eval — load ckpt, run held-out, print mean+rmse pos err + ori err
 
 import argparse
 import os

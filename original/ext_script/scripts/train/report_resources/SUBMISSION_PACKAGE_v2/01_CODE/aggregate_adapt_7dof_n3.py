@@ -2,7 +2,6 @@
 # parse the 3 expH seed logs, print n=3 mean +/- std + 95% CI
 # usage: python aggregate_adapt_7dof_n3.py <outroot>
 from __future__ import annotations
-from __future__ import annotations
 import math
 import re
 import sys
