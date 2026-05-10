@@ -1,28 +1,5 @@
 #!/usr/bin/env bash
-# Phase 2.0 (revised): n=3 Stage-3 adaptation for 7-DoF on part000.pt.
-#
-# Why: the original adapted 7-DoF row (Table 5.1, ~0.0135 m) was trained on
-# 7DOF_15deg_part001.pt (3.85M samples), while 5/6-DoF used their part000
-# files (16M / 35M). The expE part000 sanity test (seed 11) reached
-# pos_mae_m ≈ 0.0099 m at step 65k — below the 0.0101 m single-task headline
-# — confirming the inversion was dataset-bound. This script re-runs the
-# report's n=3 protocol (seeds 42, 1, 2) on part000.pt so Table 5.1's
-# adapted row uses the same data scale across all three DoFs.
-#
-# Hyperparameters match expB 7-DoF EXCEPT step budget:
-#   lr=1e-6, bs=8192, ori_w=0.05, l2=1e-6, support=50k, query=2M
-#   adapt_steps=40000  (reduced from expB's 100000)
-# Only --data is changed (part001 -> part000).
-#
-# Step-budget rationale: the part000 seed-11 sanity test (expE) ran 100k
-# steps and showed pos_mae_m reached its minimum at step ~29k (0.00991 m),
-# after which the curve drifts UP monotonically (0.00991 -> 0.01005 by step
-# 99k, +1.4%). Running past 30k is overfitting tail. We keep 10k of
-# post-optimum buffer (so the BEST eval value is unambiguous and the
-# convergence figure can show the inflection) -> adapt_steps=40000.
-# Convergence-justification figure is generated from the seed-11 100k run.
-#
-# Time estimate: ~30 min per seed on a clean GPU; ~90 min total.
+# expH: 7-DoF Stage-3 adaptation n=3 on part000 (seeds 42 1 2, steps=40k)
 #
 # This script does NOT auto-wait for other GPU jobs. Launch it in tmux only
 # after part000_test (seed 11) has finished. Verify with `nvidia-smi`.

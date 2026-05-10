@@ -1,31 +1,7 @@
 #!/usr/bin/env python3
-"""
-Generalisation-focused single-task FK trainer.
-
-Adapted from train_kinematics_nn_pol_pt_2.py — original is left untouched.
-The goal is a 7-DoF model that does NOT overfit to a single angle range.
-
-Differences from the baseline trainer:
-  1. --csv accepts a comma-separated list of dataset paths; they are loaded
-     and concatenated. Combining multiple joint-angle ranges (e.g. 5deg +
-     10deg + 15deg + 20deg) gives the network a much broader joint-config
-     distribution to learn the FK transform from, instead of memorising one
-     range's specific samples.
-  2. --dropout (default 0.2). The original ResBlock had a Dropout layer
-     defined but never applied in forward() — effectively zero. This
-     trainer uses a fixed ResBlock that actually applies dropout.
-  3. --early_stopping_patience N (default 20). Stops training if val MSE
-     hasn't improved by --early_stopping_min_delta for N consecutive
-     epochs. Saves wall-clock and prevents the late-epoch overfitting tail.
-  4. --ood_csv <comma-sep>. Optional held-out distribution(s) (e.g. an
-     angle range NOT in --csv). Logged each epoch as ood_val_total_mse so
-     you can see if generalisation is improving / collapsing without it
-     leaking into early-stopping or best-checkpoint selection.
-  5. --weight_decay default raised from 1e-5 to 1e-4.
-
-Output is the same .pt format as the baseline so eval_model_single_task.py
-works on the resulting checkpoints unchanged.
-"""
+# train_kinematics_nn_pol_pt_generalize.py — variant of the main FK trainer
+# with multi-CSV support, dropout, early stopping. Used for the regularised
+# single-task runs in Chapter 5.
 
 import argparse
 import os

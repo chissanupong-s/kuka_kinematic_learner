@@ -1,15 +1,7 @@
 #!/usr/bin/env python3
-"""
-Aggregate Stage-3 7-DoF adaptation, n=3 (seeds 42, 1, 2) on part000.pt.
-
-Usage:
-    python aggregate_adapt_7dof_n3.py <expH_outroot>
-
-Reports n=3 mean ± std and 95% Student's t CI (df=2, t=12.706), and compares
-against:
-  - the report's headline 7-DoF single-task baseline (0.0101 m, 2.0853°)
-  - the report's headline 7-DoF adapted on part001 (~0.0135 m, ~2.59°)
-"""
+# parse the 3 expH seed logs, print n=3 mean +/- std + 95% CI
+# usage: python aggregate_adapt_7dof_n3.py <outroot>
+from __future__ import annotations
 from __future__ import annotations
 import math
 import re

@@ -1,25 +1,5 @@
 #!/usr/bin/env bash
-# expK: Re-run seed 42 of Stage-3 adaptation for 5-DoF and 6-DoF with the
-# expB protocol, so Table 5.1's Adapted (best) row has consistent full-
-# precision n=3 provenance for ALL three DoF configurations.
-#
-# Why: the report's existing 5/6-DoF Adapted means were computed from data
-# that no longer exists locally (seed 42's raw checkpoints/logs were in
-# runs/adapt_fk_weighted_*, deleted in the disk cleanup). Without seed 42's
-# full-precision values we cannot show 5/6-DoF means with the same precision
-# as the new 7-DoF expH numbers (9.901 ± 0.014 mm). This script re-creates
-# seed 42 for 5/6-DoF using the same hyperparameters as expB seeds 1 and 2,
-# so the new Table 5.1 cells have provenance:
-#   "n=3, seeds 42, 1, 2 — same protocol throughout".
-#
-# Hyperparameters match expB exactly:
-#   5-DoF: lr=1e-5, bs=2048, adapt_steps=30000, ori_w=0.30, l2=1e-6
-#   6-DoF: lr=1e-6, bs=2048, adapt_steps=30000, ori_w=0.30, l2=1e-6
-# Both: support=50000, query=2000000, query_batch=8192.
-#
-# Time: ~10-15 min/seed on a clean GPU; ~25 min total for both. Will share
-# the GPU with the running expJ (slight slowdown, expected — both will
-# still complete).
+# expK: seed=42 adapt rerun for 5/6-DoF (matches expB hyperparams)
 set -euo pipefail
 
 TIMESTAMP="$(date +%Y%m%d_%H%M%S)"

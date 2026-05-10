@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate Figures 5.3 (position), 5.4 (orientation), and 5.5 (wall-clock)
-with proper top padding so the legend / titles don't crop when embedded
-into Word.
-
-Key changes vs previous render:
-  - explicit extra top margin (ylim * 1.30 instead of 1.15)
-  - legend with frameon=True and small padding
-  - savefig(pad_inches=0.4) so the bbox includes the legend top
-  - consistent 3-decimal display
-"""
+# bar charts for fig 5.3 5.4 5.5
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
