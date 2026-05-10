@@ -1,0 +1,17 @@
+v28-extras started Fri May  8 05:39:42 AM +07 2026
+=== ablB_5dof_random_init ===
+  start: Fri May  8 05:39:42 AM +07 2026
+  [INFO] BEST step=26000 metrics={'pos_mae_m': 0.006239046808332205, 'pos_rmse_m': 0.007088589482009411, 'ori_deg': 0.5506117939949036} score=0.011745164748281241
+  end:   Fri May  8 05:47:16 AM +07 2026
+
+=== ablB_6dof_random_init ===
+  start: Fri May  8 05:47:18 AM +07 2026
+  [INFO] BEST step=30000 metrics={'pos_mae_m': 0.018622608855366707, 'pos_rmse_m': 0.021841412410140038, 'ori_deg': 1.7328121662139893} score=0.0359507305175066
+  end:   Fri May  8 05:55:00 AM +07 2026
+
+=== dof7_K120000 ===
+  start: Fri May  8 05:55:00 AM +07 2026
+  [INFO] BEST step=30000 metrics={'pos_mae_m': 0.015015335753560066, 'pos_rmse_m': 0.01770436391234398, 'ori_deg': 2.675841808319092} score=0.041773753836750985
+  end:   Fri May  8 06:11:43 AM +07 2026
+
+v28-extras done Fri May  8 06:11:43 AM +07 2026

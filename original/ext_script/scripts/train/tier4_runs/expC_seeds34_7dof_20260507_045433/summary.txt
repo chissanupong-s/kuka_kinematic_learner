@@ -1,0 +1,9 @@
+[Fri May  8 06:05:10 AM +07 2026] Waiting for current GPU jobs to finish...
+[Fri May  8 06:12:10 AM +07 2026] GPU is free. Starting seeds 3, 4 (and 5 if needed).
+=== seed 3 ===
+  start: Fri May  8 06:12:10 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013572986237704754, 'pos_rmse_m': 0.016875604167580605, 'ori_deg': 2.591083526611328} score=0.03948382150381803
+  end:   Fri May  8 07:22:03 AM +07 2026
+
+=== seed 4 ===
+  start: Fri May  8 07:22:03 AM +07 2026

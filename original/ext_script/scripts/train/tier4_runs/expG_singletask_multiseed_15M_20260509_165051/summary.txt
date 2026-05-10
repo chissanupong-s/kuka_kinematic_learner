@@ -1,0 +1,102 @@
+[Sat May  9 04:50:51 PM +07 2026] Waiting for any current GPU jobs to finish...
+[Sat May  9 04:50:51 PM +07 2026] GPU is free. Starting Stage-1 multi-seed training (n=3 × 3 DoFs)
+  Sub-sample cap: 15000000
+  Hyperparameters match the report's Stage-1 baseline (epochs=200, hidden=1024, blocks=8)
+
+============================================================
+[TRAIN] dof5_seed42
+  start: Sat May  9 04:50:51 PM +07 2026
+============================================================
+[EVAL] dof5_seed42
+[Sat May  9 11:15:55 PM +07 2026] === RESUME === Continuing expG into existing OUTROOT
+  OUTROOT: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expG_singletask_multiseed_15M_20260509_165051
+  Skipping: dof5_seed42 (already complete: pos=0.008594m ori=1.109deg)
+
+============================================================
+[TRAIN] dof5_seed1
+  start: Sat May  9 11:15:55 PM +07 2026
+============================================================
+[EVAL] dof5_seed1
+  Total MSE: 0.000945
+  Mean position error: 0.008908 m
+  RMSE position error: 0.009875 m
+  Mean orientation error: 1.175321 deg
+  RMSE orientation error: 1.695896 deg
+  end:   Sun May 10 01:25:26 AM +07 2026
+
+============================================================
+[TRAIN] dof5_seed2
+  start: Sun May 10 01:25:26 AM +07 2026
+============================================================
+[EVAL] dof5_seed2
+  Total MSE: 0.000735
+  Mean position error: 0.008652 m
+  RMSE position error: 0.009594 m
+  Mean orientation error: 1.145375 deg
+  RMSE orientation error: 1.640298 deg
+  end:   Sun May 10 03:34:46 AM +07 2026
+
+============================================================
+[TRAIN] dof6_seed42
+  start: Sun May 10 03:34:46 AM +07 2026
+============================================================
+[EVAL] dof6_seed42
+  Total MSE: 0.004297
+  Mean position error: 0.011782 m
+  RMSE position error: 0.012999 m
+  Mean orientation error: 1.817790 deg
+  RMSE orientation error: 2.840630 deg
+  end:   Sun May 10 05:44:09 AM +07 2026
+
+============================================================
+[TRAIN] dof6_seed1
+  start: Sun May 10 05:44:09 AM +07 2026
+============================================================
+[EVAL] dof6_seed1
+  Total MSE: 0.004285
+  Mean position error: 0.011782 m
+  RMSE position error: 0.013008 m
+  Mean orientation error: 1.810601 deg
+  RMSE orientation error: 2.712278 deg
+  end:   Sun May 10 07:53:56 AM +07 2026
+
+============================================================
+[TRAIN] dof6_seed2
+  start: Sun May 10 07:53:56 AM +07 2026
+============================================================
+[EVAL] dof6_seed2
+  Total MSE: 0.004207
+  Mean position error: 0.011607 m
+  RMSE position error: 0.012814 m
+  Mean orientation error: 1.786254 deg
+  RMSE orientation error: 2.664038 deg
+  end:   Sun May 10 10:03:46 AM +07 2026
+
+============================================================
+[TRAIN] dof7_seed42
+  start: Sun May 10 10:03:46 AM +07 2026
+============================================================
+[EVAL] dof7_seed42
+  Total MSE: 0.003829
+  Mean position error: 0.007749 m
+  RMSE position error: 0.008600 m
+  Mean orientation error: 1.823327 deg
+  RMSE orientation error: 2.614726 deg
+  end:   Sun May 10 12:13:51 PM +07 2026
+
+============================================================
+[TRAIN] dof7_seed1
+  start: Sun May 10 12:13:51 PM +07 2026
+============================================================
+[EVAL] dof7_seed1
+  Total MSE: 0.003856
+  Mean position error: 0.007593 m
+  RMSE position error: 0.008418 m
+  Mean orientation error: 1.838284 deg
+  RMSE orientation error: 2.643359 deg
+  end:   Sun May 10 02:26:07 PM +07 2026
+
+============================================================
+[TRAIN] dof7_seed2
+  start: Sun May 10 02:26:07 PM +07 2026
+============================================================

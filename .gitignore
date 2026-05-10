@@ -71,8 +71,15 @@ original/**/datasets/
 events.out.tfevents.*
 *.tfevents.*
 
-# Tier-4 experiment outputs (per-seed runs, multi-GB)
-original/ext_script/scripts/train/tier4_runs/
+# Tier-4 experiment outputs: track scripts (.sh, .py) and small text outputs
+# (summary.txt, logs/*.log) for cross-machine coordination via this repo;
+# ignore the heavy artefacts (model checkpoints, tensorboard binary).
+original/ext_script/scripts/train/tier4_runs/**/ckpts/
+original/ext_script/scripts/train/tier4_runs/**/tb/
+original/ext_script/scripts/train/tier4_runs/**/models/
+
+# Pre-edit snapshots — kept locally on each machine, NOT shared via git
+originals/
 
 # Older model-tracking checkpoints
 original/ext_script/scripts/train/model_tracking/*

@@ -1,0 +1,9 @@
+[Sat May  9 01:58:57 PM +07 2026] Waiting for any current GPU jobs to finish...
+[Sat May  9 01:58:58 PM +07 2026] GPU is free. Starting Stage-1 multi-seed training (n=3 × 3 DoFs)
+  Sub-sample cap: 15000000
+  Hyperparameters match the report's Stage-1 baseline (epochs=200, hidden=1024, blocks=8)
+
+============================================================
+[TRAIN] dof5_seed42
+  start: Sat May  9 01:58:58 PM +07 2026
+============================================================

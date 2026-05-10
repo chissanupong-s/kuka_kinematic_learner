@@ -1,0 +1,9 @@
+[Sun May 10 09:50:30 PM +07 2026] === expL === Regularized single-task baselines (n=3 per DoF)
+  reg: dropout=0.2, weight_decay=1e-4, early_stop=15
+  data: per-DoF primary single distribution, capped at 15000000 samples
+
+[Sun May 10 09:50:30 PM +07 2026] --- 7-DoF block ---
+============================================================
+[TRAIN] dof7_seed42
+  start: Sun May 10 09:50:30 PM +07 2026
+============================================================

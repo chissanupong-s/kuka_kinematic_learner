@@ -1,0 +1,10 @@
+EXPERIMENT A — Random-init 7-DoF adaptation
+timestamp: 20260507_045433
+ckpt: /tmp/random_init_resmlp_20260507_045433.pt
+data: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/data/narrowed/7DOF_15deg/7DOF_15deg_part001.pt
+support_size=50000  query_size=2000000  adapt_steps=100000  inner_lr=1e-5
+pos_weight=1.0  ori_weight=0.30  score_pos_w=1.0  score_ori_w=0.01
+started: Thu May  7 04:56:07 AM +07 2026
+finished: Thu May  7 06:10:13 AM +07 2026
+[INFO] BEST step=96000 metrics={'pos_mae_m': 0.006643674802035093, 'pos_rmse_m': 0.007355588488280773, 'ori_deg': 0.8331522941589355} score=0.01497519774362445
+DONE. Outputs in: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expA_random_init_7dof_20260507_045433

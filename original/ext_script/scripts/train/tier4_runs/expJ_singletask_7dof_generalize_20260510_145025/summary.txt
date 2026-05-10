@@ -1,0 +1,118 @@
+[Sun May 10 02:50:25 PM +07 2026] === expJ === 7-DoF single-task generalisation training (n=3)
+  train data: 5deg + 10deg + 15deg + 20deg part000 (combined, capped to 15000000)
+  ood val:    7DOF_15deg_part001.pt
+  reg:        dropout=0.2, weight_decay=1e-4, early_stop_patience=15
+
+============================================================
+[TRAIN] dof7_seed42_generalize
+  start: Sun May 10 02:50:25 PM +07 2026
+============================================================
+[EVAL] dof7_seed42_generalize — running 4-distribution generalisation grid
+  [eval on 5deg]
+    Total MSE: 0.006598
+    Mean position error: 0.006115 m
+    RMSE position error: 0.006782 m
+    Mean orientation error: 2.173038 deg
+    RMSE orientation error: 4.224836 deg
+  [eval on 10deg]
+    Total MSE: 0.009401
+    Mean position error: 0.010507 m
+    RMSE position error: 0.011621 m
+    Mean orientation error: 2.724441 deg
+    RMSE orientation error: 4.830526 deg
+  [eval on 15deg-part000]
+    Total MSE: 0.010327
+    Mean position error: 0.013902 m
+    RMSE position error: 0.015406 m
+    Mean orientation error: 3.197446 deg
+    RMSE orientation error: 5.505681 deg
+  [eval on 15deg-part001]
+    Total MSE: 0.014588
+    Mean position error: 0.018368 m
+    RMSE position error: 0.020944 m
+    Mean orientation error: 4.234458 deg
+    RMSE orientation error: 7.583221 deg
+  [eval on 20deg]
+    Total MSE: 0.020338
+    Mean position error: 0.025295 m
+    RMSE position error: 0.030985 m
+    Mean orientation error: 5.555121 deg
+    RMSE orientation error: 9.105223 deg
+  end:   Sun May 10 05:40:16 PM +07 2026
+
+============================================================
+[TRAIN] dof7_seed1_generalize
+  start: Sun May 10 05:40:16 PM +07 2026
+============================================================
+[EVAL] dof7_seed1_generalize — running 4-distribution generalisation grid
+  [eval on 5deg]
+    Total MSE: 0.008902
+    Mean position error: 0.007185 m
+    RMSE position error: 0.007906 m
+    Mean orientation error: 2.410674 deg
+    RMSE orientation error: 4.656159 deg
+  [eval on 10deg]
+    Total MSE: 0.011103
+    Mean position error: 0.011735 m
+    RMSE position error: 0.012982 m
+    Mean orientation error: 3.009666 deg
+    RMSE orientation error: 5.329662 deg
+  [eval on 15deg-part000]
+    Total MSE: 0.012626
+    Mean position error: 0.016077 m
+    RMSE position error: 0.017797 m
+    Mean orientation error: 3.597745 deg
+    RMSE orientation error: 6.017404 deg
+  [eval on 15deg-part001]
+    Total MSE: 0.020405
+    Mean position error: 0.022283 m
+    RMSE position error: 0.025090 m
+    Mean orientation error: 4.886348 deg
+    RMSE orientation error: 8.281746 deg
+  [eval on 20deg]
+    Total MSE: 0.025396
+    Mean position error: 0.027324 m
+    RMSE position error: 0.032804 m
+    Mean orientation error: 6.097757 deg
+    RMSE orientation error: 10.054339 deg
+  end:   Sun May 10 07:15:01 PM +07 2026
+
+============================================================
+[TRAIN] dof7_seed2_generalize
+  start: Sun May 10 07:15:01 PM +07 2026
+============================================================
+[EVAL] dof7_seed2_generalize — running 4-distribution generalisation grid
+  [eval on 5deg]
+    Total MSE: 0.006980
+    Mean position error: 0.006730 m
+    RMSE position error: 0.007442 m
+    Mean orientation error: 2.206081 deg
+    RMSE orientation error: 4.305044 deg
+  [eval on 10deg]
+    Total MSE: 0.009878
+    Mean position error: 0.011209 m
+    RMSE position error: 0.012403 m
+    Mean orientation error: 2.721982 deg
+    RMSE orientation error: 4.771166 deg
+  [eval on 15deg-part000]
+    Total MSE: 0.011009
+    Mean position error: 0.014629 m
+    RMSE position error: 0.016194 m
+    Mean orientation error: 3.235106 deg
+    RMSE orientation error: 5.450301 deg
+  [eval on 15deg-part001]
+    Total MSE: 0.015604
+    Mean position error: 0.019209 m
+    RMSE position error: 0.021779 m
+    Mean orientation error: 4.291787 deg
+    RMSE orientation error: 7.337506 deg
+  [eval on 20deg]
+    Total MSE: 0.021715
+    Mean position error: 0.025999 m
+    RMSE position error: 0.031839 m
+    Mean orientation error: 5.654702 deg
+    RMSE orientation error: 9.221066 deg
+  end:   Sun May 10 10:01:09 PM +07 2026
+
+[Sun May 10 10:01:09 PM +07 2026] === expJ complete ===
+Summary in: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expJ_singletask_7dof_generalize_20260510_145025/summary.txt

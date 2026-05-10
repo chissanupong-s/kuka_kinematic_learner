@@ -1,0 +1,45 @@
+[Sat May  9 04:50:09 AM +07 2026] Waiting for current GPU jobs to finish...
+[Sat May  9 04:50:09 AM +07 2026] GPU is free. Starting seeds 4-10 for 7-DoF (n=10 multi-seed evaluation).
+=== seed 4 ===
+  start: Sat May  9 04:50:09 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013537093997001648, 'pos_rmse_m': 0.016729038208723068, 'ori_deg': 2.5731046199798584} score=0.039268140196800236
+  end:   Sat May  9 06:00:48 AM +07 2026
+
+=== seed 5 ===
+  start: Sat May  9 06:00:48 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013631326146423817, 'pos_rmse_m': 0.01689675636589527, 'ori_deg': 2.6044082641601562} score=0.039675408788025376
+  end:   Sat May  9 07:10:27 AM +07 2026
+
+=== seed 6 ===
+  start: Sat May  9 07:10:27 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.01360329519957304, 'pos_rmse_m': 0.016767404973506927, 'ori_deg': 2.5899853706359863} score=0.0395031489059329
+  end:   Sat May  9 08:21:07 AM +07 2026
+
+=== seed 7 ===
+  start: Sat May  9 08:21:07 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013494471088051796, 'pos_rmse_m': 0.016666140407323837, 'ori_deg': 2.5746006965637207} score=0.03924047805368901
+  end:   Sat May  9 09:31:54 AM +07 2026
+
+=== seed 8 ===
+  start: Sat May  9 09:31:54 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013543499633669853, 'pos_rmse_m': 0.01670108176767826, 'ori_deg': 2.591481924057007} score=0.03945831887423992
+  end:   Sat May  9 10:41:00 AM +07 2026
+
+=== seed 9 ===
+  start: Sat May  9 10:41:01 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013526283204555511, 'pos_rmse_m': 0.016683479771018028, 'ori_deg': 2.5966098308563232} score=0.03949238151311875
+  end:   Sat May  9 11:50:19 AM +07 2026
+
+=== seed 10 ===
+  start: Sat May  9 11:50:19 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013527070172131062, 'pos_rmse_m': 0.016705483198165894, 'ori_deg': 2.598707675933838} score=0.03951414693146944
+  end:   Sat May  9 01:00:54 PM +07 2026
+
+[Sat May  9 01:00:54 PM +07 2026] === All seeds 4-10 done. ===
+
+=== n=10 Aggregate (seeds 42, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10) ===
+  Existing seeds 1, 2 logs are at expB_multiseed_smart/logs/
+  Existing seeds 3, 4 logs are at expC_seeds34_7dof/logs/ (seed 3 only; seed 4 redone here)
+  New seeds 4-10 logs are in this directory's logs/
+  Run aggregate_n10_stats.py after this script finishes.
+[Sat May  9 01:00:54 PM +07 2026] Phase-1 (n=10 7-DoF multi-seed) batch complete.

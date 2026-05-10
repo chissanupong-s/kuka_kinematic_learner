@@ -1,0 +1,13 @@
+=== EXPERIMENT D — t-SNE feature projection (timestamp 20260507_045433) ===
+Loading shared seed=42 checkpoint: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/runs/multitask/seperate_weight/1/fk_iiwa_5_6_7/multitask_fk_best.pt
+Shared model architecture: hidden_dim=1024, num_blocks=8
+  step=289500, total_steps=300000, base_lr=0.0003
+DoF 5: dataset shape (16218611, 14)
+DoF 6: dataset shape (34941375, 14)
+DoF 7: dataset shape (3852032, 14)
+Penultimate features collected: shape=(3000, 1024)
+Running t-SNE (this may take 1–3 min)...
+Saved figure: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expD_tsne_20260507_045433/fig_features_20260507_045433.png
+Saved figure: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expD_tsne_20260507_045433/fig_features_20260507_045433.pdf
+Saved features+projection: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expD_tsne_20260507_045433/features_and_projection_20260507_045433.npz
+Total time: 68.2 s
