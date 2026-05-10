@@ -47,12 +47,20 @@ echo "  timestamp:  $TS"
 echo "  machine:    $MACHINE"
 echo
 
-found=0
+found=0; skipped=0
 for ckpt in "$SRC"/*/tb/fk/fk_pose_best.pt; do
     if [ ! -f "$ckpt" ]; then continue; fi
-    found=$((found + 1))
     # Pull the dof/seed tag from the path (e.g., dof5_seed42 or dof7_seed42_part000)
     tag=$(basename "$(dirname "$(dirname "$(dirname "$ckpt")")")")
+    # Guard: only upload if the eval log confirms a successful evaluation completed.
+    # Prevents pushing checkpoints from runs that crashed mid-eval.
+    eval_log="$SRC/logs/${tag}_eval.log"
+    if [ ! -f "$eval_log" ] || ! grep -q "Mean position error" "$eval_log" 2>/dev/null; then
+        echo "[skip] $tag — no successful eval log (training may not have completed)"
+        skipped=$((skipped + 1))
+        continue
+    fi
+    found=$((found + 1))
     remote_name="${EXP}_${MACHINE}_${tag}_${TS}.pt"
     echo "[$found] $tag -> $remote_name"
     hf upload "$HF_REPO" "$ckpt" "$remote_name" --quiet 2>&1 | tail -3
