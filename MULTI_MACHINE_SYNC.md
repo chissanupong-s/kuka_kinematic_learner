@@ -62,6 +62,44 @@ If git pull says there's a conflict in the docx:
 3. Apply your local-only edits on top
 4. Commit + push
 
+### Push-rejected-because-remote-is-ahead — handling rule (for Claude / automation)
+
+This **WILL** happen routinely when both machines push close together. The
+expected pattern is:
+
+```
+$ git push origin main
+! [rejected]        main -> main (fetch first)
+error: failed to push some refs to '...'
+hint: Updates were rejected because the remote contains work that you do
+      not have locally...
+```
+
+**Standing rule for any Claude instance encountering this:**
+
+1. Do **not** ask the user. This is the normal cross-machine race condition;
+   the user has already authorised the push.
+2. Do **not** use `--force` or `--force-with-lease`. Ever.
+3. **Pull first, then re-push:**
+   ```bash
+   git pull origin main
+   git push origin main
+   ```
+4. If the pull merges cleanly (the typical case for timestamped run dirs),
+   the second push succeeds. Done — report the final commit hash.
+5. If the pull surfaces a real merge conflict (almost always means the
+   .docx — see "Resolving conflicts" above), **stop and report** the
+   conflicting file to the user. Do not attempt to resolve a binary docx
+   merge automatically.
+
+For non-Claude users: same flow, manual.
+
+A convenience alias to make this one command everywhere:
+```bash
+git config --global alias.sync '!git pull origin main && git push origin main'
+# then use: git sync   instead of separate pull + push
+```
+
 For tier4_runs/, conflicts only happen if both machines wrote to the same
 run-dir (which they shouldn't — timestamps make this nearly impossible).
 

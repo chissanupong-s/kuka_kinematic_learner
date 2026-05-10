@@ -147,6 +147,28 @@ git push origin main
 Do this whenever convenient. A reasonable rhythm: push after each completed
 seed (so 6 commits over ~12 hr).
 
+### If `git push` is rejected (remote ahead)
+
+This is **expected** and harmless — Machine A has pushed something while
+you were training. Do NOT ask the user; do NOT use `--force`. The fix is
+always the same two-command sequence:
+
+```bash
+git pull origin main      # safely merges Machine A's changes into yours
+git push origin main      # now succeeds
+```
+
+The pull never deletes your run directories — they have a unique timestamp
+that doesn't overlap with Machine A's. Only the docx (`*.docx`) could
+genuinely conflict, and Machine B is told elsewhere in this file not to
+edit the docx, so that conflict can't arise here.
+
+If the pull does surface an unexpected conflict, **stop and report** —
+don't try to auto-resolve.
+
+Full handling rule documented in
+[MULTI_MACHINE_SYNC.md → "Push-rejected-because-remote-is-ahead"](MULTI_MACHINE_SYNC.md).
+
 ---
 
 ## When ALL 6 runs complete — final tasks
