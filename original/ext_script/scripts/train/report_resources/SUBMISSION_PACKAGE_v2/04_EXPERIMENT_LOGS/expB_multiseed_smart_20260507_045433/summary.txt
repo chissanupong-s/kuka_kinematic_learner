@@ -1,0 +1,43 @@
+Multi-seed Stage-3 adaptation — smart variant (all 3 DoFs)
+ckpt: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/runs/multitask/seperate_weight/1/fk_iiwa_5_6_7/multitask_fk_best.pt
+started: Thu May  7 06:23:19 AM +07 2026
+
+=== RUN seed1_dof5 (lr=1e-5 bs=2048 steps=30000 ori_w=0.30 l2=1e-6) ===
+  log: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expB_multiseed_smart_20260507_045433/logs/adapt_seed1_dof5.log
+  start: Thu May  7 06:23:19 AM +07 2026
+  [INFO] BEST step=30000 metrics={'pos_mae_m': 0.006201956886798143, 'pos_rmse_m': 0.007146202959120274, 'ori_deg': 0.8092231154441833} score=0.014294188041239978
+  end: Thu May  7 06:31:09 AM +07 2026
+
+=== RUN seed2_dof5 (lr=1e-5 bs=2048 steps=30000 ori_w=0.30 l2=1e-6) ===
+  log: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expB_multiseed_smart_20260507_045433/logs/adapt_seed2_dof5.log
+  start: Thu May  7 06:31:09 AM +07 2026
+  [INFO] BEST step=25000 metrics={'pos_mae_m': 0.0062440428882837296, 'pos_rmse_m': 0.007194617763161659, 'ori_deg': 0.8120013475418091} score=0.01436405636370182
+  end: Thu May  7 06:38:44 AM +07 2026
+
+=== RUN seed1_dof6 (lr=1e-6 bs=2048 steps=30000 ori_w=0.30 l2=1e-6) ===
+  log: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expB_multiseed_smart_20260507_045433/logs/adapt_seed1_dof6.log
+  start: Thu May  7 06:38:44 AM +07 2026
+  [INFO] BEST step=22000 metrics={'pos_mae_m': 0.00892677903175354, 'pos_rmse_m': 0.010228299535810947, 'ori_deg': 1.331598162651062} score=0.02224276065826416
+  end: Thu May  7 06:46:25 AM +07 2026
+
+=== RUN seed2_dof6 (lr=1e-6 bs=2048 steps=30000 ori_w=0.30 l2=1e-6) ===
+  log: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expB_multiseed_smart_20260507_045433/logs/adapt_seed2_dof6.log
+  start: Thu May  7 06:46:25 AM +07 2026
+  [INFO] BEST step=21000 metrics={'pos_mae_m': 0.008890706114470959, 'pos_rmse_m': 0.010174968279898167, 'ori_deg': 1.3276662826538086} score=0.022167368941009045
+  end: Thu May  7 06:54:01 AM +07 2026
+
+=== RUN seed1_dof7 (lr=1e-6 bs=8192 steps=100000 ori_w=0.05 l2=1e-6) ===
+  log: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expB_multiseed_smart_20260507_045433/logs/adapt_seed1_dof7.log
+  start: Thu May  7 06:54:01 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013317413628101349, 'pos_rmse_m': 0.01663311943411827, 'ori_deg': 2.56785249710083} score=0.03899593859910965
+  end: Thu May  7 08:11:55 AM +07 2026
+
+=== RUN seed2_dof7 (lr=1e-6 bs=8192 steps=100000 ori_w=0.05 l2=1e-6) ===
+  log: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expB_multiseed_smart_20260507_045433/logs/adapt_seed2_dof7.log
+  start: Thu May  7 08:11:55 AM +07 2026
+  [INFO] BEST step=100000 metrics={'pos_mae_m': 0.013300919905304909, 'pos_rmse_m': 0.016512302681803703, 'ori_deg': 2.549309730529785} score=0.03879401721060276
+  end: Thu May  7 09:30:18 AM +07 2026
+
+
+finished: Thu May  7 09:30:18 AM +07 2026
+DONE. Outputs in: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expB_multiseed_smart_20260507_045433

@@ -110,3 +110,6 @@ conference_resources/*.synctex.gz
 
 # 360 MB of intermediate experiment results (regeneratable; not needed for report submission)
 original/ext_script/scripts/train/report_resources/results/
+
+# Submission package — allow the bundled Stage-2 ckpt (deduped by git's content-addressing)
+!original/ext_script/scripts/train/report_resources/SUBMISSION_PACKAGE_v2/02_TRAINED_MODELS/multitask_fk_best.pt

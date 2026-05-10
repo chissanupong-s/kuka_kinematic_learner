@@ -1,0 +1,18 @@
+[Sun May 10 04:06:13 PM +07 2026] === expK === seed 42 adaptation for 5/6-DoF (expB protocol)
+  ckpt: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/runs/multitask/seperate_weight/1/fk_iiwa_5_6_7/multitask_fk_best.pt
+
+============================================================
+[RUN] seed42_dof5 (lr=1e-5 bs=2048 steps=30000 ori_w=0.30 l2=1e-6)
+  start: Sun May 10 04:06:13 PM +07 2026
+============================================================
+  [INFO] BEST step=20000 metrics={'pos_mae_m': 0.006161670666188002, 'pos_rmse_m': 0.007075889501720667, 'ori_deg': 0.8057190775871277} score=0.014218861442059279
+  end:   Sun May 10 04:19:11 PM +07 2026
+
+============================================================
+[RUN] seed42_dof6 (lr=1e-6 bs=2048 steps=30000 ori_w=0.30 l2=1e-6)
+  start: Sun May 10 04:19:11 PM +07 2026
+============================================================
+  [INFO] BEST step=20000 metrics={'pos_mae_m': 0.008883523754775524, 'pos_rmse_m': 0.01016614306718111, 'ori_deg': 1.3286010026931763} score=0.022169533781707287
+  end:   Sun May 10 04:32:16 PM +07 2026
+
+[Sun May 10 04:32:16 PM +07 2026] === expK complete ===
