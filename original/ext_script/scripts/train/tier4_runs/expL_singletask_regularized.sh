@@ -33,7 +33,7 @@ mkdir -p "$LOGDIR"
 SUMMARY="$OUTROOT/summary.txt"
 
 # Hyperparameters
-EPOCHS=300
+EPOCHS=200
 BATCH_SIZE=4096
 LR=3e-5                  # FIXED LR (was 5e-4 with scheduler-decay-on-plateau).
                          # In expJ runs the scheduler decayed lr to ~4e-6 by

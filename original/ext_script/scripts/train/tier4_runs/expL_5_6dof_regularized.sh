@@ -25,7 +25,7 @@ LOGDIR="$OUTROOT/logs"
 mkdir -p "$LOGDIR"
 SUMMARY="$OUTROOT/summary.txt"
 
-EPOCHS=300
+EPOCHS=200
 BATCH_SIZE=4096
 LR=3e-5                  # FIXED LR — matches the primary machine's expL
                          # (no scheduler decay; mid-low rate held throughout)
