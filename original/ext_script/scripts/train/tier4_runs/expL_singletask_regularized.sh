@@ -35,17 +35,17 @@ SUMMARY="$OUTROOT/summary.txt"
 # Hyperparameters
 EPOCHS=200
 BATCH_SIZE=4096
-LR=3e-5                  # FIXED LR (was 5e-4 with scheduler-decay-on-plateau).
+LR=2.5e-5                # FIXED LR (was 5e-4 with scheduler-decay-on-plateau).
                          # In expJ runs the scheduler decayed lr to ~4e-6 by
-                         # epoch 145 and best val was reached late; a fixed
-                         # mid-low lr around the ~3e-5 mark gave better
-                         # convergence stability without the high-lr volatile
-                         # phase, hence pinning it here.
+                         # epoch 145; the prior 3e-5 fixed-LR run with
+                         # patience=15 stopped too early at 14 mm pos error.
+                         # Going slightly lower (2.5e-5) for finer-grained
+                         # convergence late in training.
 HIDDEN_DIM=1024
 NUM_BLOCKS=8
 WEIGHT_DECAY=1e-4
 DROPOUT=0.2
-EARLY_STOP_PATIENCE=15
+EARLY_STOP_PATIENCE=50
 SCHED_PATIENCE=999       # effectively disables ReduceLROnPlateau (cap is 300 epochs)
 GRAD_CLIP=1.0
 TRAIN_FRAC=0.7

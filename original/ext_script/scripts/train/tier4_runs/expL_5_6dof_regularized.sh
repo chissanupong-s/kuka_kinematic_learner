@@ -27,13 +27,15 @@ SUMMARY="$OUTROOT/summary.txt"
 
 EPOCHS=200
 BATCH_SIZE=4096
-LR=3e-5                  # FIXED LR — matches the primary machine's expL
-                         # (no scheduler decay; mid-low rate held throughout)
+LR=2.5e-5                # FIXED LR — matches the primary machine's expL
+                         # (no scheduler decay; mid-low rate held throughout).
+                         # Lowered from 3e-5 after early-stop fired too soon
+                         # at patience=15.
 HIDDEN_DIM=1024
 NUM_BLOCKS=8
 WEIGHT_DECAY=1e-4
 DROPOUT=0.2
-EARLY_STOP_PATIENCE=15
+EARLY_STOP_PATIENCE=50
 SCHED_PATIENCE=999       # effectively disables scheduler at 300-epoch cap
 GRAD_CLIP=1.0
 TRAIN_FRAC=0.7
