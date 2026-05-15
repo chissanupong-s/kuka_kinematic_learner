@@ -1,0 +1,110 @@
+[Mon May 11 01:30:38 AM +07 2026] === expL 5/6-DoF (remote machine) === Regularized single-task
+  reg: dropout=0.2, weight_decay=1e-4, early_stop=0
+  data: per-DoF primary single distribution, capped at 15000000 samples
+  this script runs in parallel with 7-DoF on the primary machine.
+
+[Mon May 11 01:30:38 AM +07 2026] --- 5-DoF block ---
+============================================================
+[TRAIN] dof5_seed42
+  start: Mon May 11 01:30:38 AM +07 2026
+============================================================
+[EVAL] dof5_seed42
+  Total MSE: 0.007000
+  Mean position error: 0.020289 m
+  RMSE position error: 0.023165 m
+  Mean orientation error: 2.832798 deg
+  RMSE orientation error: 4.431300 deg
+  end:   Mon May 11 03:42:10 AM +07 2026
+
+============================================================
+[TRAIN] dof5_seed1
+  start: Mon May 11 03:42:10 AM +07 2026
+============================================================
+[EVAL] dof5_seed1
+  Total MSE: 0.007234
+  Mean position error: 0.017868 m
+  RMSE position error: 0.020621 m
+  Mean orientation error: 2.487287 deg
+  RMSE orientation error: 4.179877 deg
+  end:   Mon May 11 05:54:14 AM +07 2026
+
+============================================================
+[TRAIN] dof5_seed2
+  start: Mon May 11 05:54:14 AM +07 2026
+============================================================
+[EVAL] dof5_seed2
+  Total MSE: 0.006987
+  Mean position error: 0.019295 m
+  RMSE position error: 0.022165 m
+  Mean orientation error: 2.618682 deg
+  RMSE orientation error: 4.372555 deg
+  end:   Mon May 11 08:06:21 AM +07 2026
+
+[Mon May 11 08:06:21 AM +07 2026] --- 6-DoF block ---
+============================================================
+[TRAIN] dof6_seed42
+  start: Mon May 11 08:06:21 AM +07 2026
+============================================================
+[EVAL] dof6_seed42
+  Total MSE: 0.015907
+  Mean position error: 0.021489 m
+  RMSE position error: 0.024191 m
+  Mean orientation error: 3.635241 deg
+  RMSE orientation error: 6.626180 deg
+  end:   Mon May 11 10:18:24 AM +07 2026
+
+============================================================
+[TRAIN] dof6_seed1
+  start: Mon May 11 10:18:24 AM +07 2026
+============================================================
+[EVAL] dof6_seed1
+  Total MSE: 0.016085
+  Mean position error: 0.021687 m
+  RMSE position error: 0.024557 m
+  Mean orientation error: 3.523326 deg
+  RMSE orientation error: 6.456004 deg
+  end:   Mon May 11 12:31:03 PM +07 2026
+
+============================================================
+[TRAIN] dof6_seed2
+  start: Mon May 11 12:31:03 PM +07 2026
+============================================================
+[EVAL] dof6_seed2
+  Total MSE: 0.015864
+  Mean position error: 0.021450 m
+  RMSE position error: 0.024173 m
+  Mean orientation error: 3.621444 deg
+  RMSE orientation error: 6.534642 deg
+  end:   Mon May 11 02:42:49 PM +07 2026
+
+[Mon May 11 02:42:49 PM +07 2026] === expL 5/6-DoF complete ===
+
+Aggregating...
+=== Stage-1 single-task multi-seed aggregator ===
+Output dir: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expL_5_6dof_regularized_20260511_013038
+
+DoF  seed   pos_mae_m     ori_deg
+--------------------------------------------------
+  5    42      0.0203      2.8328
+  5     1      0.0179      2.4873
+  5     2      0.0193      2.6187
+  6    42      0.0215      3.6352
+  6     1      0.0217      3.5233
+  6     2      0.0215      3.6214
+  7    42  (eval log missing or unreadable: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expL_5_6dof_regularized_20260511_013038/logs/dof7_seed42_eval.log)
+  7     1  (eval log missing or unreadable: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expL_5_6dof_regularized_20260511_013038/logs/dof7_seed1_eval.log)
+  7     2  (eval log missing or unreadable: /home/ubuntu/wish/kuka_kinematic_learner/original/ext_script/scripts/train/tier4_runs/expL_5_6dof_regularized_20260511_013038/logs/dof7_seed2_eval.log)
+
+=== n=3 statistics (df=2, t-multiplier=12.706, 95% CI) ===
+DoF      metric        mean         std                95% CI    headline    matches?
+------------------------------------------------------------------------------------------
+  5   pos_mae_m      0.0192      0.0012  [0.0102, 0.0281]      0.0093          no
+  5     ori_deg      2.6463      0.1744  [1.3669, 3.9256]      1.2039          no
+  6   pos_mae_m      0.0215      0.0001  [0.0206, 0.0225]      0.0110          no
+  6     ori_deg      3.5933      0.0610  [3.1457, 4.0410]      1.7136          no
+  7  (insufficient data)
+
+=== For Table 5.1 update ===
+Replace the Single-task row's point estimates with mean ± std (n=3, seeds 42, 1, 2):
+  5-DoF: pos = 0.0192 ± 0.0012 m, ori = 2.646 ± 0.174°
+  6-DoF: pos = 0.0215 ± 0.0001 m, ori = 3.593 ± 0.061°
